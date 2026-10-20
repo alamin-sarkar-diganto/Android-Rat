@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080b10">
+<title>TurboCore — Game Space</title>
+<style>
+:root{--bg:#080b10;--panel:#111720;--panel2:#151e29;--line:#263240;--text:#f4f7fb;--muted:#8996a8;--lime:#b8ff4d;--cyan:#45e8ff;--red:#ff5368}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% -10%,#1a2b25 0,transparent 38%),radial-gradient(ellipse at -10% 40%,#10232b 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid var(--lime);outline-offset:3px}.app{width:min(100%,520px);margin:auto;padding:calc(18px + env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}.brand{display:flex;gap:11px;align-items:center}.logo{width:42px;height:42px;border-radius:14px;background:var(--lime);color:#10160b;display:grid;place-items:center;font-weight:1000;font-size:22px;box-shadow:0 0 25px #b8ff4d26}.brandname{font-weight:900;letter-spacing:1.6px;font-size:15px}.brandname span{color:var(--lime)}.subbrand{font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:2px}.status{border:1px solid #31412d;color:var(--lime);border-radius:999px;padding:7px 10px;font-size:10px;letter-spacing:1px;font-weight:800;display:flex;align-items:center;gap:7px}.dot{width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime)}
+.eyebrow{color:var(--lime);font-size:10px;letter-spacing:2.4px;font-weight:900;text-transform:uppercase}.hero h1{font-size:clamp(37px,10vw,52px);letter-spacing:-2.5px;line-height:.99;margin:10px 0 12px;font-weight:950}.hero h1 em{font-style:normal;color:var(--lime)}.hero p{color:var(--muted);font-size:13px;max-width:330px;margin:0 0 23px}
+.hero-card{position:relative;overflow:hidden;border:1px solid #34413c;border-radius:25px;padding:21px;background:linear-gradient(135deg,#19251f,#111720 64%);box-shadow:0 18px 50px #0005}.hero-card:after{content:"";position:absolute;width:210px;height:210px;border-radius:50%;border:1px solid #b8ff4d22;right:-60px;top:-70px;box-shadow:0 0 0 22px #b8ff4d08,0 0 0 48px #b8ff4d06;pointer-events:none}.card-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}.pill{font-size:10px;letter-spacing:1px;padding:6px 9px;border-radius:8px;background:#b8ff4d18;color:var(--lime);font-weight:900}.tiny{font-size:10px;color:var(--muted);letter-spacing:1px}.power{display:flex;align-items:center;gap:16px;margin:23px 0 18px;position:relative;z-index:1}.power-icon{width:65px;height:65px;border:1px solid #b8ff4d66;background:#b8ff4d0c;border-radius:20px;display:grid;place-items:center;color:var(--lime);font-size:30px}.power h2{margin:0;font-size:23px;letter-spacing:-.8px}.power p{margin:4px 0 0;color:var(--muted);font-size:12px}.launch{width:100%;border:0;border-radius:14px;padding:15px 18px;background:var(--lime);color:#11170b;font-weight:950;letter-spacing:.7px;display:flex;justify-content:center;gap:9px;align-items:center;transition:transform .18s,filter .18s;position:relative;z-index:1}.launch:active{transform:scale(.98)}.launch.active{background:#1b2a1d;color:var(--lime);border:1px solid #526d38}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0 28px}.metric{background:#10161e;border:1px solid var(--line);border-radius:15px;padding:13px 10px}.metric .label{font-size:9px;color:var(--muted);letter-spacing:1.1px;text-transform:uppercase}.metric .value{font-size:22px;font-weight:900;margin-top:5px;letter-spacing:-.7px}.metric .unit{font-size:10px;color:var(--muted);font-weight:600}.metric .bar{height:3px;border-radius:9px;background:#26313c;margin-top:10px;overflow:hidden}.metric .bar span{display:block;height:100%;width:var(--w);background:var(--lime);border-radius:99px;transition:width .4s}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin:0 2px 12px}.section-head h3{margin:0;font-size:17px;letter-spacing:-.4px}.section-head small{color:var(--muted);font-size:10px;letter-spacing:1px}.toggles{display:grid;grid-template-columns:1fr 1fr;gap:10px}.toggle-card{background:linear-gradient(145deg,#141c26,#0e131a);border:1px solid var(--line);border-radius:18px;padding:15px;min-height:124px;display:flex;flex-direction:column;justify-content:space-between;transition:border-color .2s,background .2s}.toggle-card.on{border-color:#718e43;background:linear-gradient(145deg,#1c2a1c,#101820)}.toggle-top{display:flex;justify-content:space-between;align-items:center}.tile-icon{width:35px;height:35px;border-radius:11px;background:#222d39;display:grid;place-items:center;font-size:17px}.toggle-card.on .tile-icon{background:#b8ff4d1b}.switch{width:36px;height:21px;border-radius:20px;background:#394452;padding:3px;transition:background .2s}.switch:after{content:"";display:block;width:15px;height:15px;border-radius:50%;background:#a5afbb;transition:transform .2s,background .2s}.toggle-card.on .switch{background:var(--lime)}.toggle-card.on .switch:after{transform:translateX(15px);background:#17200c}.toggle-card h4{margin:12px 0 3px;font-size:13px}.toggle-card p{margin:0;color:var(--muted);font-size:10px}
+.game-head{margin-top:28px}.games{display:grid;gap:10px}.game{display:flex;align-items:center;gap:12px;padding:12px;background:#10161e;border:1px solid var(--line);border-radius:17px}.game-art{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:23px;font-weight:1000;flex-shrink:0}.art1{background:linear-gradient(145deg,#273b5b,#141c32)}.art2{background:linear-gradient(145deg,#56352d,#251918)}.art3{background:linear-gradient(145deg,#3a4a24,#182318)}.game-info{min-width:0;flex:1}.game-info h4{margin:0 0 3px;font-size:13px}.game-info p{margin:0;color:var(--muted);font-size:10px}.game-play{border:1px solid #394754;color:var(--text);background:#17202a;border-radius:10px;padding:8px 11px;font-size:11px;font-weight:800}.game-play:active{border-color:var(--lime);color:var(--lime)}
+.notice{margin-top:22px;border:1px solid #273541;background:#0e141b;border-radius:14px;padding:13px;display:flex;gap:10px;color:var(--muted);font-size:10px}.notice b{color:#dce5ed}.notice-icon{color:var(--cyan);font-size:15px}.footer{text-align:center;color:#596575;font-size:9px;letter-spacing:1.2px;margin-top:22px}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#e8f8d5;color:#18210e;padding:11px 15px;border-radius:12px;font-size:12px;font-weight:800;box-shadow:0 8px 30px #0007;transition:all .25s;white-space:nowrap;z-index:5}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(min-width:430px){.app{padding-left:22px;padding-right:22px}.toggle-card{min-height:132px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <div class="brand"><div class="logo">ϟ</div><div><div class="brandname">TURBO<span>CORE</span></div><div class="subbrand">GAME SPACE / WEB EDITION</div></div></div>
+    <div class="status"><span class="dot"></span> READY</div>
+  </header>
+  <section class="hero">
+    <div class="eyebrow">Your arena. Your rules.</div>
+    <h1>ENTER<br><em>GAME MODE.</em></h1>
+    <p>A clean gaming dashboard for your setup. Tune your session, silence distractions, and jump into your game.</p>
+  </section>
+  <section class="hero-card">
+    <div class="card-top"><span class="pill">TURBO PROFILE</span><span class="tiny" id="profileLabel">STANDBY</span></div>
+    <div class="power"><div class="power-icon">ϟ</div><div><h2 id="powerTitle">Ready to boost?</h2><p id="powerDesc">Set your focus before the match.</p></div></div>
+    <button class="launch" id="boostBtn"><span>ϟ</span><span>ACTIVATE TURBO</span></button>
+  </section>
+  <section class="metrics" aria-label="Demo performance metrics">
+    <div class="metric"><div class="label">Session</div><div class="value" id="sessionVal">00<span class="unit"> min</span></div><div class="bar"><span style="--w:12%" id="sessionBar"></span></div></div>
+    <div class="metric"><div class="label">Focus</div><div class="value" id="focusVal">72<span class="unit">%</span></div><div class="bar"><span style="--w:72%" id="focusBar"></span></div></div>
+    <div class="metric"><div class="label">Profile</div><div class="value" id="profileVal" style="font-size:17px">BALANCED</div><div class="bar"><span style="--w:55%" id="profileBar"></span></div></div>
+  </section>
+  <section>
+    <div class="section-head"><h3>Quick controls</h3><small>TAP TO TOGGLE</small></div>
+    <div class="toggles">
+      <button class="toggle-card" data-toggle="focus" aria-pressed="false"><div class="toggle-top"><div class="tile-icon">◉</div><div class="switch"></div></div><div><h4>Focus mode</h4><p>Stay in the zone</p></div></button>
+      <button class="toggle-card" data-toggle="performance" aria-pressed="false"><div class="toggle-top"><div class="tile-icon">ϟ</div><div class="switch"></div></div><div><h4>Performance profile</h4><p>Turbo-style dashboard mode</p></div></button>
+      <button class="toggle-card" data-toggle="touch" aria-pressed="false"><div class="toggle-top"><div class="tile-icon">⌁</div><div class="switch"></div></div><div><h4>Touch assist</h4><p>Quick access reminder</p></div></button>
+      <button class="toggle-card" data-toggle="sound" aria-pressed="false"><div class="toggle-top"><div class="tile-icon">♫</div><div class="switch"></div></div><div><h4>Audio focus</h4><p>Keep your sound setup ready</p></div></button>
+    </div>
+  </section>
+  <section class="game-head">
+    <div class="section-head"><h3>Your game shelf</h3><small>QUICK LAUNCH</small></div>
+    <div class="games">
+      <div class="game"><div class="game-art art1">ML</div><div class="game-info"><h4>Mobile Legends</h4><p>MOBA · Competitive</p></div><button class="game-play" data-game="Mobile Legends">OPEN ↗</button></div>
+      <div class="game"><div class="game-art art2">MC</div><div class="game-info"><h4>Minecraft</h4><p>Sandbox · Creative</p></div><button class="game-play" data-game="Minecraft">OPEN ↗</button></div>
+      <div class="game"><div class="game-art art3">＋</div><div class="game-info"><h4>Custom game</h4><p>Add a game URL or app name</p></div><button class="game-play" id="addGame">ADD +</button></div>
+    </div>
+  </section>
+  <aside class="notice"><span class="notice-icon">ⓘ</span><div><b>Web edition note</b><br>This is a standalone dashboard prototype. A website cannot directly change Android CPU/GPU speed, RAM allocation, touch sampling, DND, or launch installed apps without supported Android permissions or a native companion app.</div></aside>
+  <div class="footer">TURBOCORE WEB · BUILT FOR THE NEXT MATCH</div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const toastEl = $('#toast');
+  let toastTimer;
+  function toast(message) {
+    toastEl.textContent = message;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2100);
+  }
+  const states = {focus:false, performance:false, touch:false, sound:false};
+  let active = false, startedAt = 0, sessionTimer = null;
+  function updateMetrics() {
+    const mins = active ? Math.floor((Date.now() - startedAt) / 60000) : 0;
+    $('#sessionVal').innerHTML = String(mins).padStart(2,'0') + '<span class="unit"> min</span>';
+    $('#sessionBar').style.setProperty('--w', Math.min(100, 12 + mins * 3) + '%');
+    const focus = 72 + (states.focus ? 18 : 0) + (states.sound ? 5 : 0);
+    $('#focusVal').innerHTML = Math.min(99,focus) + '<span class="unit">%</span>';
+    $('#focusBar').style.setProperty('--w', Math.min(99,focus) + '%');
+    $('#profileVal').textContent = states.performance ? 'TURBO' : 'BALANCED';
+    $('#profileBar').style.setProperty('--w', states.performance ? '92%' : '55%');
+  }
+  function setActive(value) {
+    active = value;
+    const btn = $('#boostBtn');
+    btn.classList.toggle('active', active);
+    btn.innerHTML = active ? '<span>✓</span><span>TURBO SESSION ACTIVE</span>' : '<span>ϟ</span><span>ACTIVATE TURBO</span>';
+    $('#profileLabel').textContent = active ? 'ACTIVE SESSION' : 'STANDBY';
+    $('#powerTitle').textContent = active ? 'You’re in the zone.' : 'Ready to boost?';
+    $('#powerDesc').textContent = active ? 'Your dashboard is set for gaming.' : 'Set your focus before the match.';
+    if (active) {
+      startedAt = Date.now();
+      sessionTimer = setInterval(updateMetrics, 15000);
+      toast('Turbo dashboard activated ⚡');
+    } else {
+      clearInterval(sessionTimer);
+      sessionTimer = null;
+      toast('Session paused.');
+    }
+    updateMetrics();
+  }
+  $('#boostBtn').addEventListener('click', () => setActive(!active));
+  document.querySelectorAll('[data-toggle]').forEach(card => {
+    card.addEventListener('click', () => {
+      const key = card.dataset.toggle;
+      states[key] = !states[key];
+      card.classList.toggle('on', states[key]);
+      card.setAttribute('aria-pressed', String(states[key]));
+      updateMetrics();
+      const names = {focus:'Focus mode',performance:'Performance profile',touch:'Touch assist',sound:'Audio focus'};
+      toast(names[key] + (states[key] ? ' enabled in dashboard' : ' disabled'));
+    });
+  });
+  document.querySelectorAll('[data-game]').forEach(btn => {
+    btn.addEventListener('click', () => toast(btn.dataset.game + ': add a native app link to launch it on Android.'));
+  });
+  $('#addGame').addEventListener('click', () => {
+    const name = prompt('Enter a game name:');
+    if (!name || !name.trim()) return;
+    const safeName = name.trim().slice(0,40);
+    const row = document.createElement('div');
+    row.className = 'game';
+    const art = document.createElement('div'); art.className = 'game-art art1'; art.textContent = safeName.slice(0,2).toUpperCase();
+    const info = document.createElement('div'); info.className = 'game-info';
+    const h = document.createElement('h4'); h.textContent = safeName;
+    const p = document.createElement('p'); p.textContent = 'Custom entry · Dashboard only';
+    info.append(h,p);
+    const launch = document.createElement('button'); launch.className = 'game-play'; launch.textContent = 'OPEN ↗';
+    launch.addEventListener('click', () => toast(safeName + ': connect a supported app link to launch.'));
+    row.append(art,info,launch);
+    $('#addGame').closest('.game').before(row);
+    toast('Added to your game shelf');
+  });
+  updateMetrics();
+})();
+</script>
+</body>
+</html>
